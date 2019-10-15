@@ -38,7 +38,7 @@ def salam(data):
     id_inbox = ""
 
     try:
-        result = None
+        result = ""
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (idPesan, isiPesan, cekUserID, date.today().strftime("%Y-%m-%d")))
