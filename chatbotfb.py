@@ -20,9 +20,6 @@ def webhook():
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
 
-    if intent_name == "salam":
-        return salam(data)
-
     try:
         #result = None
         with connection.cursor() as cursor:
@@ -34,6 +31,9 @@ def webhook():
         connection.commit()
     finally:
         connection.close()
+
+    if intent_name == "salam":
+        return salam(data)
 
             # result = cursor.fetchone()
 
