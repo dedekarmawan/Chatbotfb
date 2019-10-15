@@ -51,7 +51,7 @@ def booking(data):
         'fulfillmentText':"Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. Pilih salah satu opsi dibawah ini.1. Cek harga sewa kamar2. Cek kamar yang tersedia3. Pesan kamar"
     }
 
-    return  jsonify(respon)
+    return jsonify(respon)
 
 
 if __name__ == '__main__':
