@@ -17,35 +17,33 @@ connection = pymysql.connect(host='db4free.net',
 def webhook():
     data = request.get_json()
     intent_name = data.get("queryResult").get("intent").get("displayName")
-    # inbox = data['queryResult']['queryText']
+    inbox = data['queryResult']['queryText']
     print(data)
 
     if intent_name == "salam":
         return salam(data)
 
-    return jsonify(request.get_json())
-
-
-def salam(data):
-    cekUserID = data.get("originalDetectIntentRequest").get("payload").get("data").get("source").get("userId")
-    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("id")
-    pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
-
     try:
-        # result = None
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (pesan,date) VALUES (%s, %s)"
-            # cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
-            # idterakhir = cursor.lastrowid
-            # sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
-            # cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
-            connection.commit()
+            cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
+            idterakhir = cursor.lastrowid
+            sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
+        connection.commit()
 
-    except Exception:
-        response = {
-            'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
-        }
-        return jsonify(response)
+    finally:
+           connection.close()
+
+    # return jsonify(request.get_json())
+
+def salam(data):
+    response = {
+        'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
+    }
+
+    return jsonify(response)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
