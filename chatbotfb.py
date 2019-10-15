@@ -6,40 +6,46 @@ from datetime import date
 
 app = Flask(__name__)
 
+connection = pymysql.connect(host='db4free.net',
+                             user='dedekarmawan',
+                             password='Superdede',
+                             db='snaptravelbot',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
     intent_name = data.get("queryResult").get("intent").get("displayName")
-    inbox = data['queryResult']['queryText']
+    # inbox = data['queryResult']['queryText']
     print(data)
-    connection = pymysql.connect(host='db4free.net',
-                                 user='dedekarmawan',
-                                 password='Superdede',
-                                 db='snaptravelbot',
-                                 charset='utf8mb4',
-                                 cursorclass=pymysql.cursors.DictCursor)
+
     if intent_name == "salam":
         return salam(data)
 
-    try:
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO tb_inbox (pesan,date) VALUES (%s, %s)"
-            cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
-            idterakhir = cursor.lastrowid
-            sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
-        connection.commit()
+    return jsonify(request.get_json())
 
-    finally:
-           connection.close()
 
 def salam(data):
-    response = {
-        'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
-    }
+    cekUserID = data.get("originalDetectIntentRequest").get("payload").get("data").get("source").get("userId")
+    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("id")
+    pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
 
-    return jsonify(response)
+    try:
+        # result = None
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_inbox (pesan,date) VALUES (%s, %s)"
+            # cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
+            # idterakhir = cursor.lastrowid
+            # sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
+            # cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
+            connection.commit()
 
+    except Exception:
+        response = {
+            'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
+        }
+        return jsonify(response)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
