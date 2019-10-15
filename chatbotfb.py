@@ -22,6 +22,8 @@ def webhook():
 
     if intent_name == "salam":
         return salam(data)
+    elif intent_name == "booking":
+        return booking(data)
 
     try:
         with connection.cursor() as cursor:
@@ -43,6 +45,13 @@ def salam(data):
     }
 
     return jsonify(response)
+
+def booking(data):
+    respon = {
+        'fulfillmentText':"Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. Pilih salah satu opsi dibawah ini.1. Cek harga sewa kamar2. Cek kamar yang tersedia3. Pesan kamar"
+    }
+
+    return  jsonify(respon)
 
 
 if __name__ == '__main__':
