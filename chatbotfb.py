@@ -5,6 +5,7 @@ import pymysql.cursors
 from datetime import date
 
 app = Flask(__name__)
+port = int(os.environ.get("PORT", 5000))
 
 connection = pymysql.connect(host='db4free.net',
                              user='dedekarmawan',
@@ -17,43 +18,47 @@ connection = pymysql.connect(host='db4free.net',
 def webhook():
     data = request.get_json()
     intent_name = data.get("queryResult").get("intent").get("displayName")
-    inbox = data['queryResult']['queryText']
+    # inbox = data['queryResult']['queryText']
     print(data)
 
     if intent_name == "salam":
         return salam(data)
-    elif intent_name == "booking":
-        return booking(data)
+    # elif intent_name == "booking":
+    #     return booking(data)
 
-    try:
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO tb_inbox (pesan,date) VALUES (%s, %s)"
-            cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
-            idterakhir = cursor.lastrowid
-            sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
-        connection.commit()
+    # finally:
+    #        connection.close()
 
-    finally:
-           connection.close()
-
-    # return jsonify(request.get_json())
+    return jsonify(request.get_json())
 
 def salam(data):
-    response = {
-        'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
-    }
+    cekUserID = data.get("originalDetectIntentRequest").get("payload").get("from").get("id")
+    idPesan = data.get("originalDetectIntentRequest").get("payload").get("message_id")
+    isiPesan = data.get("originalDetectIntentRequest").get("payload").get("text")
+    id_inbox = ""
 
-    return jsonify(response)
+    try:
+        result = None
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (idPesan, isiPesan, cekUserID, date.today().strftime("%Y-%m-%d")))
+            # idterakhir = cursor.lastrowid
+            # sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
+            # cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
+        connection.commit()
 
-def booking(data):
-    response = {
-        'fulfillmentText':"Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. Pilih salah satu opsi dibawah ini.1. Cek harga sewa kamar2. Cek kamar yang tersedia3. Pesan kamar"
-    }
+    except Exception:
+        response = {
+            'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
+        }
+        return jsonify(response)
 
-    return jsonify(response)
-
+# def booking(data):
+#     response = {
+#         'fulfillmentText':"Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. Pilih salah satu opsi dibawah ini.1. Cek harga sewa kamar2. Cek kamar yang tersedia3. Pesan kamar"
+#     }
+#
+#     return jsonify(response)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
