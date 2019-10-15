@@ -19,13 +19,12 @@ def webhook():
                                  db='snaptravelbot',
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
-    lastidout = ''
 
     if intent_name == "salam":
         return salam(data)
 
     try:
-        result = None
+        #result = None
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (pesan,date) VALUES (%s, %s)"
             cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
