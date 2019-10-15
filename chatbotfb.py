@@ -7,8 +7,6 @@ from datetime import date
 
 app = Flask(__name__)
 
-
-
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
@@ -21,6 +19,7 @@ def webhook():
                                  db='snaptravelbot',
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
+    lastidout = ''
 
     if intent_name == "salam":
         return salam(data)
