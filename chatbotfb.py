@@ -12,7 +12,6 @@ def webhook():
     intent_name = data.get("queryResult").get("intent").get("displayName")
     inbox = data['queryResult']['queryText']
     print(data)
-
     connection = pymysql.connect(host='db4free.net',
                                  user='dedekarmawan',
                                  password='Superdede',
@@ -32,9 +31,9 @@ def webhook():
         connection.commit()
 
     finally:
-        connection.close()
+           connection.close()
 
-  def salam(data):
+def salam(data):
     response = {
         'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
     }
