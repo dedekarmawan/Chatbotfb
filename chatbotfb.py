@@ -25,9 +25,9 @@ def webhook():
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (pesan,date) VALUES (%s, %s)"
             cursor.execute(sql, (inbox, date.today().strftime("%Y-%m-%d")))
-            idterakhir = cursor.lastrowid
-            sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
+            # idterakhir = cursor.lastrowid
+            # sql = "INSERT INTO tb_outbox(id_inbox, pesan, date) VALUES (%s, %s, %s)"
+            # cursor.execute(sql, (idterakhir, salam(data), date.today().strftime("%Y-%m-%d")))
         connection.commit()
     finally:
         connection.close()
