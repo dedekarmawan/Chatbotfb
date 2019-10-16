@@ -35,11 +35,10 @@ def salam(data):
     id_inbox = ""
 
     try:
-        result = ""
+        result = None
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
-
         connection.commit()
 
     except Exception:
@@ -48,5 +47,6 @@ def salam(data):
         }
         return jsonify(response)
 
+# run the app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
