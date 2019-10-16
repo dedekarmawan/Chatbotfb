@@ -1,11 +1,13 @@
+# import flask dependencies
 from flask import Flask, request, jsonify
 import os
-import json
 import pymysql.cursors
+import json
 from datetime import date
 
+# initialize the flask app
 app = Flask(__name__)
-
+port = int(os.environ.get("PORT", 5000))
 connection = pymysql.connect(host='db4free.net',
                              user='dedekarmawan',
                              password='Superdede',
@@ -13,6 +15,8 @@ connection = pymysql.connect(host='db4free.net',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
+
+# create a route for webhook
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
@@ -25,16 +29,16 @@ def webhook():
     return jsonify(request.get_json())
 
 def salam(data):
-    cekUserID = data.get("originalDetectIntentRequest").get("payload").get("from").get("id")
-    idPesan = data.get("originalDetectIntentRequest").get("payload").get("message_id")
-    isiPesan = data.get("originalDetectIntentRequest").get("payload").get("text")
+    id_user = data.get("originalDetectIntentRequest").get("payload").get("from").get("id")
+    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("message_id")
+    pesan = data.get("originalDetectIntentRequest").get("payload").get("text")
     id_inbox = ""
 
     try:
         result = ""
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (idPesan, isiPesan, cekUserID, date.today().strftime("%Y-%m-%d")))
+            cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
         connection.commit()
 
     except Exception:
@@ -44,5 +48,4 @@ def salam(data):
         return jsonify(response)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
