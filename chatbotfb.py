@@ -30,7 +30,7 @@ def webhook():
         return cek_tipe_kamar(data)
     elif intent_name == "bookingKamar":
         return booking_kamar(data)
-
+    print("Webhook")
     return jsonify(request.get_json())
 
 
@@ -41,7 +41,7 @@ def salam(data):
     id_inbox = ""
     respon = "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda " \
              "berlibur. Ketik booking untuk memilih opsi kamar hotel."
-
+    print("salam")
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
@@ -72,7 +72,7 @@ def hotel_menu(data):
     id_inbox = ""
     respon = "Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. " \
              "Pilih salah satu opsi dibawah ini.\n1. Cek tipe kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
-
+    print("hotel_menu")
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
@@ -97,6 +97,7 @@ def hotel_menu(data):
 
 
 def cek_kamar_ready(data):
+    print("kamar_ready")
     print(data)
 
 
@@ -105,7 +106,7 @@ def cek_tipe_kamar(data):
     id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
     pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
-
+    print("cek_tipe_kamar")
     try:
         result = None
 
@@ -151,6 +152,7 @@ def cek_tipe_kamar(data):
 
 
 def booking_kamar(data):
+    print("booking_kamar")
     print(data)
 
 
