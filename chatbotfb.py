@@ -40,7 +40,7 @@ def salam(data):
     pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
     respon = "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda " \
-             "berlibur. Ketik booking untuk memilih opsi kamar hotel."
+             "berlibur. Ketik menu untuk memilih opsi kamar hotel."
 
     try:
         with connection.cursor() as cursor:
@@ -105,7 +105,7 @@ def cek_tipe_kamar(data):
     id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
     pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
-    print("cek_tipe_kamar")
+
     try:
         result = None
 
@@ -128,15 +128,20 @@ def cek_tipe_kamar(data):
             cursor.execute(sql, (id_inbox))
         connection.commit()
 
-        fulfillmentText = ""
-
-        for tipe_kamar in result:
-            fulfillmentText += "Tipe Kamar: {}\nHarga: {}\n\n".format(tipe_kamar['size_kamar'],
-                                                                      str(tipe_kamar['harga']))
-
-        fulfillmentText += "Pilih salah satu opsi dibawah ini.\n" \
-                           "1. Cek harga sewa kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
-        return jsonify({'fulfillmentText': fulfillmentText})
+        respon = {
+            'fulfillmentText': "Ini Text",
+            'fulfillmentMessages': [
+                {
+                    'card': {
+                        'title': tipe_kamar['size_kamar'],
+                        'subtitle': tipe_kamar['harga'],
+                        'imageUri': tipe_kamar['gambar']
+                    }
+                }
+                for tipe_kamar in result
+            ]
+        }
+        return jsonify(respon)
     except Exception as error:
         print(error)
 
