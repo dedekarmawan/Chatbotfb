@@ -22,18 +22,23 @@ def webhook():
 
     if intent_name == "salam":
         return salam(data)
+    elif intent_name == "cekKamarReady":
+        return cek_kamar_ready(data)
+    elif intent_name == "cekHargaKamar":
+        return cek_harga_kamar(data)
+    elif intent_name == "bookingKamar":
+        return booking_kamar(data)
 
     return jsonify(request.get_json())
+
 
 def salam(data):
     id_user = data.get("originalDetectIntentRequest").get("payload").get("data").get("sender").get("id")
     id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
     pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
-
-    response = {
-        'fulfillmentText': "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
-    }
+    respon = "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda " \
+             "berlibur. Ketik booking untuk memilih opsi kamar hotel."
 
     try:
         with connection.cursor() as cursor:
@@ -44,15 +49,33 @@ def salam(data):
 
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
-            cursor.execute(sql, (id_inbox,
-                                 "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
+            cursor.execute(sql, (id_inbox, respon))
             sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
             cursor.execute(sql, (id_inbox))
         connection.commit()
+
+        print(id_inbox)
+
+        response = {
+            'fulfillmentText': respon
+        }
+
+        return jsonify(response)
     except Exception as error:
         print(error)
 
-    return jsonify(response)
+
+def cek_kamar_ready(data):
+    print(data)
+
+
+def cek_harga_kamar(data):
+    print(data)
+
+
+def booking_kamar(data):
+    print(data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
