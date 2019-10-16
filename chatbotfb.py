@@ -106,13 +106,12 @@ def cek_kamar_ready(data):
         result = None
 
         with connection.cursor() as cursor:
-            sql = "SELECT tb_kamar.id_kamar, tb_kamar.nama_kamar, tb_tipe_kamar.size_kamar, tb_tipe_kamar.harga " \
-                  "FROM tb_kamar, tb_tipe_kamar WHERE tb_kamar.id_tipe_kamar = tb_tipe_kamar.id_tipe_kamar AND " \
-                  "tb_kamar.status_kamar = 'Ready'"
+            sql = "SELECT tb_kamar.`id_kamar`, tb_kamar.`nama_kamar`, tb_tipe_kamar.`size_kamar`, " \
+                  "tb_tipe_kamar.`harga` FROM tb_kamar, tb_tipe_kamar " \
+                  "WHERE tb_kamar.`id_tipe_kamar` = tb_tipe_kamar.`id_tipe_kamar` AND " \
+                  "tb_kamar.`status_kamar` = 'Ready' ORDER BY tb_kamar.`id_kamar` ASC"
             cursor.execute(sql)
             result = cursor.fetchall()
-
-        print(result)
 
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
