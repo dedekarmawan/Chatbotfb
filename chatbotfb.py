@@ -133,12 +133,15 @@ def cek_tipe_kamar(data):
                 {
                     "card": {
                         "title": tipe_kamar["size_kamar"],
-                        "subtitle": tipe_kamar["harga"]
+                        "subtitle": tipe_kamar["harga"],
+                        "imageUri": tipe_kamar["gambar"]
                     }
                 }
                 for tipe_kamar in result
             ]
         }
+
+        print(respon)
 
         return jsonify(respon)
     except Exception as error:
