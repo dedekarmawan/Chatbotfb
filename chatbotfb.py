@@ -106,7 +106,7 @@ def cek_kamar_ready(data):
         result = None
 
         with connection.cursor() as cursor:
-            sql = "SELECT tb_kamar.nama_kamar, tb_tipe_kamar.size_kamar, tb_tipe_kamar.harga " \
+            sql = "SELECT tb_kamar.id_kamar, tb_kamar.nama_kamar, tb_tipe_kamar.size_kamar, tb_tipe_kamar.harga " \
                   "FROM tb_kamar, tb_tipe_kamar WHERE tb_kamar.id_tipe_kamar = tb_tipe_kamar.id_tipe_kamar AND " \
                   "tb_kamar.status_kamar = 'Ready'"
             cursor.execute(sql)
