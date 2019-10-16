@@ -31,9 +31,8 @@ def salam(data):
     pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
 
-
     response = {
-        'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
+        'fulfillmentText': "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
     }
 
     with connection.cursor() as cursor:
@@ -43,9 +42,9 @@ def salam(data):
     connection.commit()
 
     with connection.cursor() as cursor:
-        sql = "INSERT INTO tb_outbox (id_inbox, response) VALUES (%s, %s)"
+        sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
         cursor.execute(sql, (id_inbox, "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
-        sql = "UPDATE tb_outbox SET tb_inbox.status = 1 WHERE tb_inbox.id = %s"
+        sql = "UPDATE tb_inbox SET tb_inbox.status = 1 WHERE tb_inbox.id = %s"
         cursor.execute(sql, (id_inbox))
     connection.commit()
 
