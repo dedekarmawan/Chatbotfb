@@ -1,11 +1,9 @@
-# import flask dependencies
 from flask import Flask, request, jsonify
 import os
 import pymysql.cursors
 import json
 from datetime import date
 
-# initialize the flask app
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
 connection = pymysql.connect(host='db4free.net',
@@ -16,7 +14,6 @@ connection = pymysql.connect(host='db4free.net',
                              cursorclass=pymysql.cursors.DictCursor)
 
 
-# create a route for webhook
 @app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
@@ -34,19 +31,25 @@ def salam(data):
     pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
 
-    try:
-        result = None
-        with connection.cursor() as cursor:
-            sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
-        connection.commit()
 
-    except Exception:
-        response = {
-            'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
-        }
-        return jsonify(response)
+    response = {
+        'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
+    }
 
-# run the app
+    with connection.cursor() as cursor:
+        sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
+        cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
+        id_inbox = cursor.lastrowid
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        sql = "INSERT INTO tb_outbox (id_inbox, response) VALUES (%s, %s)"
+        cursor.execute(sql, (id_inbox, "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
+        sql = "UPDATE tb_outbox SET tb_inbox.status = 1 WHERE tb_inbox.id = %s"
+        cursor.execute(sql, (id_inbox))
+    connection.commit()
+
+    return jsonify(response)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
