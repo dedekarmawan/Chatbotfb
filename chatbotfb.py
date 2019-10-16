@@ -328,7 +328,39 @@ def booking_end_date(data):
 
 
 def booking_tipe_kamar(data):
-    print(data)
+    id_user = data.get("originalDetectIntentRequest").get("payload").get("data").get("sender").get("id")
+    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
+    pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
+    parameters = data.get("queryResult").get("outputContexts")[0].get("parameters")
+    nama = parameters.get("nama")
+    phone = parameters.get("phone")
+    start_date = parameters.get("date")
+    end_date = parameters.get("date2")
+    tipe_kamar = parameters.get("tipekamar")
+    id_inbox = ""
+
+    try:
+        respon = "Terima kasih telah memesan kamar.\nKetik menu untuk kembali ke menu awal"
+
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
+            id_inbox = cursor.lastrowid
+            sql = "INSERT INTO tb_booking (nama_user, phone, startDate, endDate, tipe_kamar) " \
+                  "VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (nama, phone, start_date, end_date, tipe_kamar))
+        connection.commit()
+
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
+            cursor.execute(sql, (id_inbox, respon))
+            sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
+            cursor.execute(sql, (id_inbox))
+        connection.commit()
+
+        return jsonify({'fulfillmentText': respon})
+    except Exception as error:
+        print(error)
 
 
 if __name__ == '__main__':
