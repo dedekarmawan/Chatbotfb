@@ -130,16 +130,17 @@ def cek_tipe_kamar(data):
 
         print(result)
 
-        respon = {
-            'fulfillmentMessages': [
-                {
-                    "text": tipe_kamar["size_kamar"]
-                }
-                for tipe_kamar in result
-            ]
-        }
+        fulfillmentMessages = []
 
-        return jsonify(respon)
+        for tipe_kamar in result:
+            fulfillmentMessages.append({
+                'card': {
+                    'title': tipe_kamar['size_kamar'],
+                    'imageUri': tipe_kamar['gambar']
+                }
+            })
+
+        return jsonify({'fulfillmentMessages': fulfillmentMessages})
     except Exception as error:
         print(error)
 
