@@ -133,10 +133,7 @@ def cek_tipe_kamar(data):
         respon = {
             'fulfillmentMessages': [
                 {
-                    "card": {
-                        "title": "Card",
-                        "subtitle": "Subtitle"
-                    }
+                    "text": tipe_kamar["size_kamar"]
                 }
                 for tipe_kamar in result
             ]

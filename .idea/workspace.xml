@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/chatbotfb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="131" column="32" selection-start-line="131" selection-start-column="13" selection-end-line="131" selection-end-column="32" />
+            <state relative-caret-position="217">
+              <caret line="135" column="50" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
               <folding>
                 <element signature="e#28#69#0" expanded="true" />
               </folding>
@@ -295,7 +295,21 @@
       <option name="project" value="LOCAL" />
       <updated>1571230349328</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="update">
+      <created>1571230646801</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1571230646801</updated>
+    </task>
+    <task id="LOCAL-00024" summary="update">
+      <created>1571230890602</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1571230890602</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -417,8 +431,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chatbotfb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="131" column="32" selection-start-line="131" selection-start-column="13" selection-end-line="131" selection-end-column="32" />
+        <state relative-caret-position="217">
+          <caret line="135" column="50" selection-start-line="135" selection-start-column="50" selection-end-line="135" selection-end-column="50" />
           <folding>
             <element signature="e#28#69#0" expanded="true" />
           </folding>
