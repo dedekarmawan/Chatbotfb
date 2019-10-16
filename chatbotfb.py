@@ -134,6 +134,9 @@ def cek_tipe_kamar(data):
             fulfillmentText += "Tipe Kamar: {}\nHarga: {}\n\n".format(tipe_kamar['size_kamar'],
                                                                       str(tipe_kamar['harga']))
 
+        fulfillmentText += "Pilih salah satu opsi dibawah ini.\n" \
+                           "1. Cek harga sewa kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
+
         return jsonify({'fulfillmentText': fulfillmentText})
     except Exception as error:
         print(error)
