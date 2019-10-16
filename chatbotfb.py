@@ -112,6 +112,8 @@ def cek_kamar_ready(data):
             cursor.execute(sql)
             result = cursor.fetchall()
 
+        print(result)
+
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
