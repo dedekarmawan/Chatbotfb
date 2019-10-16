@@ -346,7 +346,7 @@ def booking_tipe_kamar(data):
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
             id_inbox = cursor.lastrowid
-            sql = "INSERT INTO tb_booking (nama_user, phone, startDate, endDate, tipe_kamar) " \
+            sql = "INSERT INTO tb_reservasi (nama_user, phone, startDate, endDate, tipe_kamar) " \
                   "VALUES (%s, %s, %s, %s, %s)"
             cursor.execute(sql, (nama, phone, start_date, end_date, tipe_kamar))
         connection.commit()
