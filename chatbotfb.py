@@ -22,6 +22,8 @@ def webhook():
 
     if intent_name == "salam":
         return salam(data)
+    elif intent_name == "HotelMenu":
+        return hotel_menu(data)
     elif intent_name == "cekKamarReady":
         return cek_kamar_ready(data)
     elif intent_name == "cekHargaKamar":
@@ -54,7 +56,36 @@ def salam(data):
             cursor.execute(sql, (id_inbox))
         connection.commit()
 
-        print(id_inbox)
+        response = {
+            'fulfillmentText': respon
+        }
+
+        return jsonify(response)
+    except Exception as error:
+        print(error)
+
+
+def hotel_menu(data):
+    id_user = data.get("originalDetectIntentRequest").get("payload").get("data").get("sender").get("id")
+    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
+    pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
+    id_inbox = ""
+    respon = "Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. " \
+             "Pilih salah satu opsi dibawah ini.\n1. Cek harga sewa kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
+
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
+            id_inbox = cursor.lastrowid
+        connection.commit()
+
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
+            cursor.execute(sql, (id_inbox, respon))
+            sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
+            cursor.execute(sql, (id_inbox))
+        connection.commit()
 
         response = {
             'fulfillmentText': respon
