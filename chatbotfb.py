@@ -5,7 +5,7 @@ import pymysql.cursors
 from datetime import date
 
 app = Flask(__name__)
-port = int(os.environ.get("PORT", 5000))
+
 connection = pymysql.connect(host='db4free.net',
                              user='dedekarmawan',
                              password='Superdede',
@@ -44,4 +44,5 @@ def salam(data):
         return jsonify(response)
 
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
