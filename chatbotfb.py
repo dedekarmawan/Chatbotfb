@@ -133,7 +133,7 @@ def cek_tipe_kamar(data):
                 {
                     "card": {
                         "title": tipe_kamar["size_kamar"],
-                        "subtitle": tipe_kamar["harga"],
+                        "subtitle": str(tipe_kamar["harga"]),
                         "imageUri": tipe_kamar["gambar"]
                     }
                 }
