@@ -41,6 +41,28 @@ def salam(data):
             cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
         connection.commit()
 
+        response = {
+            'fulfillmentMessages': [
+                {
+                    "card": {
+                        "title": "Menu",
+                        "subtitle": "Halo {}, Silahkan pilih menu di bawah",
+                        "buttons": [
+                            {
+                                "text": "Cek Profil",
+                                "postback": "cek profil"
+                            },
+                            {
+                                "text": "Info Akademik",
+                                "postback": "info akademik"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+        return response
+
     except Exception:
         response = {
             'fulfillmentText':"Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
