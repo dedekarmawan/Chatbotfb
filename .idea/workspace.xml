@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/chatbotfb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1951">
-              <caret line="131" column="40" selection-start-line="131" selection-start-column="40" selection-end-line="131" selection-end-column="40" />
+            <state relative-caret-position="183">
+              <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
               <folding>
                 <element signature="e#28#69#0" expanded="true" />
               </folding>
@@ -259,7 +259,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571228689396</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update">
+      <created>1571229310552</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1571229310552</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -380,8 +387,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chatbotfb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1951">
-          <caret line="131" column="40" selection-start-line="131" selection-start-column="40" selection-end-line="131" selection-end-column="40" />
+        <state relative-caret-position="183">
+          <caret line="151" lean-forward="true" selection-start-line="151" selection-end-line="151" />
           <folding>
             <element signature="e#28#69#0" expanded="true" />
           </folding>
