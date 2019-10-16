@@ -128,21 +128,13 @@ def cek_tipe_kamar(data):
             cursor.execute(sql, (id_inbox))
         connection.commit()
 
-        fulfillmentText = []
+        fulfillmentText = ""
 
         for tipe_kamar in result:
-            fulfillmentText.append("Tipe Kamar: {}\nHarga: {}".format(tipe_kamar['size_kamar'],
-                                                                      str(tipe_kamar['harga'])))
+            fulfillmentText += "Tipe Kamar: {}\nHarga: {}\n\n".format(tipe_kamar['size_kamar'],
+                                                                      str(tipe_kamar['harga']))
 
-        respon = {
-            'fulfillmentMessages': [
-                {
-                    'text': fulfillmentText
-                }
-            ]
-        }
-
-        return jsonify(respon)
+        return jsonify({'fulfillmentText': fulfillmentText})
     except Exception as error:
         print(error)
 
