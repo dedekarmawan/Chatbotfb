@@ -97,7 +97,47 @@ def hotel_menu(data):
 
 
 def cek_kamar_ready(data):
-    print(data)
+    id_user = data.get("originalDetectIntentRequest").get("payload").get("data").get("sender").get("id")
+    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
+    pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
+    id_inbox = ""
+
+    try:
+        result = None
+
+        with connection.cursor() as cursor:
+            sql = "SELECT tb_kamar.nama_kamar, tb_tipe_kamar.size_kamar, tb_tipe_kamar.harga " \
+                  "FROM tb_kamar, tb_tipe_kamar WHERE tb_kamar.id_tipe_kamar = tb_tipe_kamar.id_tipe_kamar AND " \
+                  "tb_kamar.status_kamar = 'Ready'"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
+            id_inbox = cursor.lastrowid
+        connection.commit()
+
+        with connection.cursor() as cursor:
+            for kamar in result:
+                sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
+                cursor.execute(sql, (id_inbox, kamar['id_kamar']))
+            sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
+            cursor.execute(sql, (id_inbox))
+        connection.commit()
+
+        fulfillmentText = ""
+
+        for kamar in result:
+            fulfillmentText += "Nomor Kamar: {}\nTipe Kamar: {}\nHarga: {}\n\n".format(kamar['nama_kamar'],
+                                                                                       kamar['size_kamar'],
+                                                                                       str(kamar['harga']))
+
+        fulfillmentText += "Pilih salah satu opsi dibawah ini.\n" \
+                           "1. Cek harga sewa kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
+        return jsonify({'fulfillmentText': fulfillmentText})
+    except Exception as error:
+        print(error)
 
 
 def cek_tipe_kamar(data):
@@ -128,18 +168,15 @@ def cek_tipe_kamar(data):
             cursor.execute(sql, (id_inbox))
         connection.commit()
 
-        fullfillmentMessages = [
-                {
-                    'card': {
-                        'title': tipe_kamar['size_kamar'],
-                        'subtitle': tipe_kamar['harga'],
-                        'imageUri': tipe_kamar['gambar']
-                    }
-                }
-                for tipe_kamar in result
-            ]
-        fullfillmentMessages.append({'text': ["Ini Teks"]})
-        return jsonify({'fulfillmentMessages': fullfillmentMessages})
+        fulfillmentText = ""
+
+        for tipe_kamar in result:
+            fulfillmentText += "Tipe Kamar: {}\nHarga: {}\n\n".format(tipe_kamar['size_kamar'],
+                                                                      str(tipe_kamar['harga']))
+
+        fulfillmentText += "Pilih salah satu opsi dibawah ini.\n" \
+                           "1. Cek harga sewa kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
+        return jsonify({'fulfillmentText': fulfillmentText})
     except Exception as error:
         print(error)
 
