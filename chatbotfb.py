@@ -41,12 +41,12 @@ def salam(data):
         id_inbox = cursor.lastrowid
     connection.commit()
 
-    # with connection.cursor() as cursor:
-    #     sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
-    #     cursor.execute(sql, (id_inbox, "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
-    #     sql = "UPDATE tb_inbox SET tb_inbox.status = 1 WHERE tb_inbox.id = %s"
-    #     cursor.execute(sql, (id_inbox))
-    # connection.commit()
+    with connection.cursor() as cursor:
+        sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
+        cursor.execute(sql, (id_inbox, "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
+        sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
+        cursor.execute(sql, (id_inbox))
+    connection.commit()
 
     return jsonify(response)
 
