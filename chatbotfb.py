@@ -35,20 +35,25 @@ def salam(data):
         'fulfillmentText': "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."
     }
 
-    with connection.cursor() as cursor:
-        sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
-        id_inbox = cursor.lastrowid
-    connection.commit()
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
+            id_inbox = cursor.lastrowid
+        connection.commit()
 
-    with connection.cursor() as cursor:
-        sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
-        cursor.execute(sql, (id_inbox, "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
-        sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
-        cursor.execute(sql, (id_inbox))
-    connection.commit()
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO tb_outbox (id_inbox, respon) VALUES (%s, %s)"
+            cursor.execute(sql, (id_inbox,
+                                 "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda berlibur. Ketik booking untuk memilih opsi kamar hotel."))
+            sql = "UPDATE tb_inbox SET tb_inbox.status = '1' WHERE tb_inbox.id = %s"
+            cursor.execute(sql, (id_inbox))
+        connection.commit()
+    except Exception as error:
+        print(error)
 
     return jsonify(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
