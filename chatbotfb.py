@@ -128,19 +128,19 @@ def cek_tipe_kamar(data):
             cursor.execute(sql, (id_inbox))
         connection.commit()
 
+        print(result)
+
         respon = {
             'fulfillmentMessages': [
                 {
                     "card": {
-                        "title": tipe_kamar["size_kamar"],
-                        "subtitle": str(tipe_kamar["harga"]),
+                        "title": "Card",
+                        "subtitle": "Subtitle"
                     }
                 }
                 for tipe_kamar in result
             ]
         }
-
-        print(respon)
 
         return jsonify(respon)
     except Exception as error:
