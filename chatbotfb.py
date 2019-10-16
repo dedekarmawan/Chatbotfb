@@ -29,9 +29,9 @@ def webhook():
     return jsonify(request.get_json())
 
 def salam(data):
-    id_user = data.get("originalDetectIntentRequest").get("payload").get("from").get("id")
-    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("message_id")
-    pesan = data.get("originalDetectIntentRequest").get("payload").get("text")
+    id_user = data.get("originalDetectIntentRequest").get("payload").get("data").get("sender").get("id")
+    id_pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("mid")
+    pesan = data.get("originalDetectIntentRequest").get("payload").get("data").get("message").get("text")
     id_inbox = ""
 
     try:
@@ -39,29 +39,8 @@ def salam(data):
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (id_pesan, pesan, id_user, date.today().strftime("%Y-%m-%d")))
-        connection.commit()
 
-        response = {
-            'fulfillmentMessages': [
-                {
-                    "card": {
-                        "title": "Menu",
-                        "subtitle": "Halo {}, Silahkan pilih menu di bawah",
-                        "buttons": [
-                            {
-                                "text": "Cek Profil",
-                                "postback": "cek profil"
-                            },
-                            {
-                                "text": "Info Akademik",
-                                "postback": "info akademik"
-                            }
-                        ]
-                    }
-                }
-            ]
-        }
-        return response
+        connection.commit()
 
     except Exception:
         response = {

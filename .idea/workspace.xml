@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41f6bd9b-ed75-41be-a6b8-e8b6045e118b" name="Default Changelist" comment="" />
+    <list default="true" id="41f6bd9b-ed75-41be-a6b8-e8b6045e118b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/chatbotfb.py" beforeDir="false" afterPath="$PROJECT_DIR$/chatbotfb.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,10 +15,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/chatbotfb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="34" column="17" lean-forward="true" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+            <state relative-caret-position="306">
+              <caret line="33" column="90" selection-start-line="33" selection-start-column="90" selection-end-line="33" selection-end-column="90" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#28#69#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -163,13 +165,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="697" height="745" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.04552352" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
-      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.33333334" />
+      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.20915033" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -271,10 +274,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chatbotfb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="34" column="17" lean-forward="true" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+        <state relative-caret-position="306">
+          <caret line="33" column="90" selection-start-line="33" selection-start-column="90" selection-end-line="33" selection-end-column="90" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#28#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
