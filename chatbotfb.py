@@ -30,7 +30,7 @@ def webhook():
         return cek_tipe_kamar(data)
     elif intent_name == "bookingKamar":
         return booking_kamar(data)
-    print("Webhook")
+
     return jsonify(request.get_json())
 
 
@@ -41,7 +41,7 @@ def salam(data):
     id_inbox = ""
     respon = "Hai, saya Tutlesbot. Chatbot yang akan membantu anda dalam mencari hotel ketika anda " \
              "berlibur. Ketik booking untuk memilih opsi kamar hotel."
-    print("salam")
+
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
@@ -72,7 +72,7 @@ def hotel_menu(data):
     id_inbox = ""
     respon = "Tutlesbot akan membantu anda dalam menentukan pilihan kamar yang sesuai dengan keinginan anda. " \
              "Pilih salah satu opsi dibawah ini.\n1. Cek tipe kamar\n2. Cek kamar yang tersedia\n3. Pesan kamar"
-    print("hotel_menu")
+
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO tb_inbox (id_pesan, pesan, id_user, date) VALUES (%s, %s, %s, %s)"
@@ -97,7 +97,6 @@ def hotel_menu(data):
 
 
 def cek_kamar_ready(data):
-    print("kamar_ready")
     print(data)
 
 
@@ -129,16 +128,12 @@ def cek_tipe_kamar(data):
             cursor.execute(sql, (id_inbox))
         connection.commit()
 
-        # respon = {
-            # 'fulfillmentText': "Berhasil"
-        # }
         respon = {
             'fulfillmentMessages': [
                 {
                     "card": {
                         "title": tipe_kamar["size_kamar"],
-                        "subtitle": tipe_kamar["harga"],
-                        "imageUri": tipe_kamar["gambar"]
+                        "subtitle": tipe_kamar["harga"]
                     }
                 }
                 for tipe_kamar in result
@@ -150,9 +145,7 @@ def cek_tipe_kamar(data):
         print(error)
 
 
-
 def booking_kamar(data):
-    print("booking_kamar")
     print(data)
 
 
